@@ -5,7 +5,6 @@ import { buildCategoryTree } from '~/lib/utils'
 import { categoryRepository } from '~/http/categories.repository'
 import { merchantRepository } from '~/http/merchants.repository'
 import type { CategoryTree } from '~/types/category.types'
-import { useRouteParamManager } from '~/composables/useRouteParamManager'
 
 export const useFilterStore = defineStore('filter', () => {
 	const selectedCategoryId = ref<number | null>(null)
@@ -13,8 +12,6 @@ export const useFilterStore = defineStore('filter', () => {
 	const categories = ref<CategoryTree[]>([])
 	const merchants = ref<Merchant[]>([])
 
-	const { addToArrayParam, removeFromArrayParam, goToRouteWithParams } =
-		useRouteParamManager()
 
 	const getCategoriesList = async (fetch: $Fetch) => {
 		try {

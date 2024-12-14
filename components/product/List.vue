@@ -7,5 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-	const { products } = useProductsStore()
+	const productStore = useProductsStore()
+	const { products } = storeToRefs(productStore)
 </script>

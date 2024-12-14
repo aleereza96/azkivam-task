@@ -5,13 +5,30 @@ import type { RepositoryOptions } from '~/types/repository.types'
 import { productRepository } from '~/http/product.repository'
 
 export const useProductsStore = defineStore('products', () => {
-	const products = ref<Product[]>()
+	const products = ref<Product[]>([])
 	const productCount = ref<number>()
 
 	const getProductList = async (fetch: $Fetch, options?: RepositoryOptions) => {
 		try {
 			const response = await productRepository(fetch).fetchProductList(options)
-			products.value = response.data
+			products.value?.push(...response.data)
+			productCount.value = response.totalItems
+		} catch (error) {
+			alert('Something Went wrong!!')
+			console.log(error)
+		}
+	}
+
+	const getProductListByCategoryId = async (
+		fetch: $Fetch,
+		catId: number,
+		options?: RepositoryOptions
+	) => {
+		try {
+			const response = await productRepository(
+				fetch
+			).fetchProductListByCategoryId(catId, options)
+			products.value?.push(...response.data)
 			productCount.value = response.totalItems
 		} catch (error) {
 			alert('Something Went wrong!!')
@@ -26,6 +43,8 @@ export const useProductsStore = defineStore('products', () => {
 	return {
 		products: products,
 		getProductList,
-		clearProducts
+		clearProducts,
+		productCount,
+		getProductListByCategoryId
 	}
 })
